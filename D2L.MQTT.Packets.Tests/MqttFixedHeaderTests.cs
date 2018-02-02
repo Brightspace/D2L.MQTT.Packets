@@ -8,7 +8,7 @@ namespace D2L.MQTT.Packets.Tests {
 
 		private const PacketType UnknownPacketType = 0;
 
-		[ Test]
+		[Test]
 		public void Construction_InvalidPacketType() {
 
 			Assert.Throws<ArgumentException>( () => {

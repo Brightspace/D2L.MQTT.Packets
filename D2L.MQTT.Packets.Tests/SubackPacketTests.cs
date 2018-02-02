@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
 using NUnit.Framework;
-using System;
 
 namespace D2L.MQTT.Packets.Tests {
 
@@ -33,7 +30,7 @@ namespace D2L.MQTT.Packets.Tests {
 					name: "ReturnCodeQoS0",
 					packet: new SubackPacket(
 						packetIdentifier: 3,
-						returnCodes: new [] {
+						returnCodes: new[] {
 							SubscribeReturnCode.QoS0
 						}
 					),

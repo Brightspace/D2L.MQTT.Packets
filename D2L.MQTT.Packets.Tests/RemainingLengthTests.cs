@@ -73,7 +73,7 @@ namespace D2L.MQTT.Packets.Tests {
 
 		[TestCaseSource( nameof( GetIncompleteRemainingLengthTestCases ) )]
 		public void TryReadRemainingLength_WhenIncomplete(
-				byte[] bytes 
+				byte[] bytes
 			) {
 
 			using( MemoryStream ms = new MemoryStream( bytes ) ) {
