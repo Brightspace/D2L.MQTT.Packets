@@ -51,7 +51,7 @@ namespace D2L.MQTT.Packets {
 		internal static UnsubscribePacket Read( MqttFixedHeader header, Stream stream ) {
 
 			ushort packetIdentifier = stream.ReadBigEndianOrThrow( Type, "Missing packet identifier" );
-			IEnumerable<string> topics = ReadTopicFilters( header.Length - 2, stream );
+			IEnumerable<string> topics = ReadTopicFilters( header.RemainingLength - 2, stream );
 
 			return new UnsubscribePacket(
 					packetIdentifier,

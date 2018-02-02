@@ -41,7 +41,7 @@ namespace D2L.MQTT.Packets {
 		internal static SubackPacket Read( MqttFixedHeader header, Stream stream ) {
 
 			ushort packetIdentifier = stream.ReadBigEndianOrThrow( Type, "Missing packet identifier" );
-			IEnumerable<SubscribeReturnCode> codes = ReadReturnCodes( header.Length - 2, stream );
+			IEnumerable<SubscribeReturnCode> codes = ReadReturnCodes( header.RemainingLength - 2, stream );
 
 			return new SubackPacket( packetIdentifier, codes );
 		}

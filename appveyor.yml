@@ -1,8 +1,8 @@
-version: 0.0.1-{branch}-{build}
+version: 0.1.0-{branch}-{build}
 skip_branch_with_pr: true
 
 environment:
-  ASSEMBLY_FILE_VERSION: 0.0.0
+  ASSEMBLY_FILE_VERSION: 0.1.0
 
 configuration: Release
 platform: Any CPU
