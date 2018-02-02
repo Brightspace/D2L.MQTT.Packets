@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace D2L.MQTT.Packets {
 
@@ -29,23 +30,25 @@ namespace D2L.MQTT.Packets {
 		/// <returns>Returns the MQTT packet's fixed header if the stream is not empty; otherwise, <c>null</c>.</returns>
 		public static MqttFixedHeader ReadFixedHeader( Stream stream ) {
 
-			byte[] headerBuffer = new byte[ 1 ];
-
-			int count = stream.Read( headerBuffer, 0, 1 );
-			if( count == 0 ) {
+			int controlPacketByte = stream.ReadByte();
+			if( controlPacketByte < 0 ) {
 				return null;
 			}
 
-			byte headerByte = headerBuffer[ 0 ];
-			PacketType packetType = (PacketType)( ( headerByte >> 4 ) & 0x0F );
-			byte flags = (byte)( headerByte & 0x0F );
+			PacketType packetType;
+			byte flags;
+			MqttFixedHeader.ParseControlPacketByte(
+					(byte)controlPacketByte,
+					out packetType,
+					out flags
+				);
 
-			int? length = stream.ReadVariableLength();
-			if( !length.HasValue ) {
+			int? remainingLength = MqttFixedHeader.TryReadRemainingLength( stream );
+			if( !remainingLength.HasValue ) {
 				throw new PacketFormatException( packetType, "Invalid remaining length" );
 			}
 
-			return new MqttFixedHeader( packetType, flags, length.Value );
+			return new MqttFixedHeader( packetType, flags, remainingLength.Value );
 		}
 
 		/// <summary>
@@ -105,7 +108,7 @@ namespace D2L.MQTT.Packets {
 					return DisconnectPacket.Read( fixedHeader, stream );
 
 				default:
-					return null;
+					throw new NotSupportedException( $"Unsupported mqtt packet type: { fixedHeader.PacketType }" );
 			}
 		}
 	}

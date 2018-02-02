@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
-using System;
 
 namespace D2L.MQTT.Packets.Tests {
 

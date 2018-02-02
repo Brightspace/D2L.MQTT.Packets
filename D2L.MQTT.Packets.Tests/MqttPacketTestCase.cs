@@ -3,7 +3,7 @@
 namespace D2L.MQTT.Packets.Tests {
 
 	public sealed class MqttPacketTestCase<TPacket>
-		: TestCaseData 
+		: TestCaseData
 		where TPacket : MqttPacket {
 
 		public MqttPacketTestCase( string name, TPacket packet, byte[] bytes )

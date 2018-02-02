@@ -24,48 +24,25 @@ namespace D2L.MQTT.Packets {
 			);
 
 			stream.WriteByte( byte1 );
-			stream.WriteVariableLength( remainingLength );
+			stream.WriteRemainingLength( remainingLength );
 		}
 
-		internal static void WriteVariableLength(
+		internal static void WriteRemainingLength(
 				this Stream stream,
-				int length
+				int remainingLength
 			) {
 
 			do {
-				byte encodedByte = (byte)( length % 128 );
-				length = length / 128;
+				byte encodedByte = (byte)( remainingLength % 128 );
+				remainingLength = remainingLength / 128;
 
-				if( length > 0 ) {
+				if( remainingLength > 0 ) {
 					encodedByte |= 128;
 				}
 
 				stream.WriteByte( encodedByte );
 
-			} while( length > 0 );
-		}
-
-		public static int? ReadVariableLength( this Stream stream ) {
-
-			int length = 0;
-			int multiplier = 1;
-
-			for( int i = 0; i < 4; i++ ) {
-
-				int encodedByte = stream.ReadByte();
-				if( encodedByte < -1 ) {
-					return null;
-				}
-
-				length += ( encodedByte & 127 ) * multiplier;
-				multiplier *= 128;
-
-				if( ( encodedByte & 128 ) == 0 ) {
-					break;
-				}
-			}
-
-			return length;
+			} while( remainingLength > 0 );
 		}
 
 		public static void WriteMqttString(

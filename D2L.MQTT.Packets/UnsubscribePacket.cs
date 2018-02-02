@@ -43,7 +43,7 @@ namespace D2L.MQTT.Packets {
 			stream.WriteMqttFixedHeader( Type, 0x02, length );
 			stream.WriteBigEndian( this.PacketIdentifier );
 
-			foreach( byte[] topic in topics ) { 
+			foreach( byte[] topic in topics ) {
 				stream.WriteMqttString( topic );
 			}
 		}
