@@ -4,6 +4,12 @@ namespace D2L.MQTT.Packets {
 
 	public static class MqttPacketReader {
 
+		/// <summary>
+		/// Reads a MQTT packet.
+		/// </summary>
+		/// <param name="stream">The stream.</param>
+		/// <exception cref="PacketFormatException">Thrown if the stream does not define a valid MQTT packet.</exception>
+		/// <returns>Returns the MQTT packet if the stream is not empty; otherwise, <c>null</c>.</returns>
 		public static MqttPacket ReadPacket( Stream stream ) {
 
 			MqttFixedHeader header = ReadFixedHeader( stream );
@@ -11,11 +17,17 @@ namespace D2L.MQTT.Packets {
 				return null;
 			}
 
-			MqttPacket packet = ReadPacket( header, stream );
+			MqttPacket packet = ReadRemainingPacket( header, stream );
 			return packet;
 		}
 
-		private static MqttFixedHeader ReadFixedHeader( Stream stream ) {
+		/// <summary>
+		/// Reads the fixed header of a MQTT packet.
+		/// </summary>
+		/// <param name="stream">The stream.</param>
+		/// <exception cref="PacketFormatException">Thrown if the stream does not define a valid fixed header.</exception>
+		/// <returns>Returns the MQTT packet's fixed header if the stream is not empty; otherwise, <c>null</c>.</returns>
+		public static MqttFixedHeader ReadFixedHeader( Stream stream ) {
 
 			byte[] headerBuffer = new byte[ 1 ];
 
@@ -36,54 +48,61 @@ namespace D2L.MQTT.Packets {
 			return new MqttFixedHeader( packetType, flags, length.Value );
 		}
 
-		private static MqttPacket ReadPacket(
-				MqttFixedHeader header,
+		/// <summary>
+		/// Reads the remaining MQTT packet given the fixed header.
+		/// </summary>
+		/// <param name="fixedHeader">The fixed header.</param>
+		/// <param name="stream">The stream.</param>
+		/// <exception cref="PacketFormatException">Thrown if the stream does not define a valid MQTT packet for the given fixed header.</exception>
+		/// <returns>Returns the remaining MQTT packet for the given fixed header.</returns>
+		public static MqttPacket ReadRemainingPacket(
+				MqttFixedHeader fixedHeader,
 				Stream stream
 			) {
 
-			switch( header.PacketType ) {
+			switch( fixedHeader.PacketType ) {
 
 				case PacketType.Connect:
-					return ConnectPacket.Read( header, stream );
+					return ConnectPacket.Read( fixedHeader, stream );
 
 				case PacketType.Connack:
-					return ConnackPacket.Read( header, stream );
+					return ConnackPacket.Read( fixedHeader, stream );
 
 				case PacketType.Publish:
-					return PublishPacket.Read( header, stream );
+					return PublishPacket.Read( fixedHeader, stream );
 
 				case PacketType.Puback:
-					return PubackPacket.Read( header, stream );
+					return PubackPacket.Read( fixedHeader, stream );
 
 				case PacketType.Pubrec:
-					return PubrecPacket.Read( header, stream );
+					return PubrecPacket.Read( fixedHeader, stream );
 
 				case PacketType.Pubrel:
-					return PubrelPacket.Read( header, stream );
+					return PubrelPacket.Read( fixedHeader, stream );
 
 				case PacketType.Pubcomp:
-					return PubcompPacket.Read( header, stream );
+					return PubcompPacket.Read( fixedHeader, stream );
 
 				case PacketType.Subscribe:
-					return SubscribePacket.Read( header, stream );
+					return SubscribePacket.Read( fixedHeader, stream );
 
 				case PacketType.Suback:
-					return SubackPacket.Read( header, stream );
+					return SubackPacket.Read( fixedHeader, stream );
 
 				case PacketType.Unsubscribe:
-					return UnsubscribePacket.Read( header, stream );
+					return UnsubscribePacket.Read( fixedHeader, stream );
 
 				case PacketType.Unsuback:
-					return UnsubackPacket.Read( header, stream );
+					return UnsubackPacket.Read( fixedHeader, stream );
 
 				case PacketType.Pingreq:
-					return PingreqPacket.Read( header, stream );
+					return PingreqPacket.Read( fixedHeader, stream );
 
 				case PacketType.Pingresp:
-					return PingrespPacket.Read( header, stream );
+					return PingrespPacket.Read( fixedHeader, stream );
 
 				case PacketType.Disconnect:
-					return DisconnectPacket.Read( header, stream );
+					return DisconnectPacket.Read( fixedHeader, stream );
 
 				default:
 					return null;

@@ -81,7 +81,7 @@ namespace D2L.MQTT.Packets {
 			QualityOfService qos = (QualityOfService)( ( (byte)publishFlags >> 1 ) & 0x03 );
 			bool duplicate = publishFlags.HasFlag( PublishFlags.Duplicate );
 
-			int messageLength = header.Length;
+			int messageLength = header.RemainingLength;
 
 			int topicBytes;
 			string topic = stream.ReadMqttStringOrThrow( Type, "Missing topic", out topicBytes );
