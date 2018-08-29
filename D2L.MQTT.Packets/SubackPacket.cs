@@ -20,7 +20,7 @@ namespace D2L.MQTT.Packets {
 		}
 
 		public ushort PacketIdentifier { get; }
-		public IReadOnlyList<SubscribeReturnCode> ReturnCodes;
+		public IReadOnlyList<SubscribeReturnCode> ReturnCodes { get; }
 
 		public override PacketType PacketType {
 			get { return Type; }

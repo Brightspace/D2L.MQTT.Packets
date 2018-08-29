@@ -8,8 +8,6 @@ namespace D2L.MQTT.Packets {
 
 		private const PacketType Type = PacketType.Pingresp;
 
-		public ushort PacketIdentifier { get; }
-
 		public override PacketType PacketType {
 			get { return Type; }
 		}
