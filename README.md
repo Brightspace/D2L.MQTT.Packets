@@ -24,6 +24,6 @@ To release a new version of this library, bump the version numbers in [appveyor.
 
 Make sure to get both spots! Get this change into the `master` branch.
 
-After this, create a [new release](https://github.com/Brightspace/D2L.DevTools.CodeGen.MsBuild/releases/new) with the tag name `v1.0.1`. _Don't forget the leading `v`!_
+After this, create a [new release](https://github.com/Brightspace/D2L.MQTT.Packets/releases/new) with the tag name `v1.0.1`. _Don't forget the leading `v`!_
 
 Your package will be published to our AppVeyor account feed and automatically pulled down to [nuget.build.d2l](http://nuget.build.d2l)
